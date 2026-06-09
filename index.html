@@ -22,8 +22,11 @@
             --accent: #4f46e5;
             --ink-color: #1a1d5a; 
             --success: #10b981;
+            --dark-bg: #2a2a2a;
+            --dark-paper: #1a1a1a;
+            --dark-text: #f0f0f0;
             
-            --paper-texture: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"%3E%3Cfilter id="noise"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch"/%3E%3CfeColorMatrix type="matrix" values="0 0 0 0 0.6 0 0 0 0 0.6 0 0 0 0 0.6 0 0 0 0.1 0"/%3E%3C/filter%3E%3Crect width="100" height="100" filter="url(%23noise)" opacity="0.5"/%3E%3C/svg%3E');
+            --paper-texture: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"%3E%3Cfilter id="noise"%3E%3CfeTurbulence type="fractal[...]
         }
 
         body {
@@ -37,13 +40,56 @@
             justify-content: center;
             -webkit-tap-highlight-color: transparent;
             min-height: 100vh;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        body.dark-mode {
+            --bg-color: var(--dark-bg);
+            --paper-color: var(--dark-paper);
+            --text-main: var(--dark-text);
+            --ink-color: #f0f0f0;
         }
 
         .container { width: 100%; max-width: 600px; padding-bottom: 100px; position: relative; }
         
         header { margin-bottom: 20px; text-align: center; }
-        h1 { font-family: 'Permanent Marker', cursive; font-size: 2.5rem; margin: 0; color: var(--ink-color); }
-        .subtitle { color: #8b7355; font-size: 0.9rem; margin: 0; font-weight: 600;}
+        h1 { font-family: 'Permanent Marker', cursive; font-size: 2.5rem; margin: 0; color: var(--ink-color); transition: color 0.3s ease; }
+        .subtitle { color: #8b7355; font-size: 0.9rem; margin: 0; font-weight: 600; transition: color 0.3s ease;}
+
+        body.dark-mode .subtitle { color: #a8a8a8; }
+
+        /* Header Controls */
+        .header-controls {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .icon-btn {
+            background: rgba(255,255,255,0.5);
+            border: none;
+            border-radius: 8px;
+            padding: 8px 12px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .icon-btn:hover {
+            background: rgba(255,255,255,0.7);
+            transform: scale(1.05);
+        }
+
+        body.dark-mode .icon-btn {
+            background: rgba(255,255,255,0.1);
+        }
+
+        body.dark-mode .icon-btn:hover {
+            background: rgba(255,255,255,0.2);
+        }
 
         /* Controls */
         .control-panel {
@@ -53,6 +99,12 @@
             margin-bottom: 20px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.05);
             border: 1px solid rgba(255,255,255,0.3);
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode .control-panel {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
         }
 
         .input-group { display: flex; gap: 8px; margin-bottom: 10px;}
@@ -61,11 +113,28 @@
             flex-grow: 1; padding: 12px; border: 2px solid #c9ada7;
             border-radius: 8px; font-size: 1rem; font-family: inherit; outline: none;
             background: var(--paper-color);
+            color: var(--text-main);
+            transition: all 0.3s ease;
+        }
+
+        #taskInput:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 8px rgba(79, 70, 229, 0.2);
         }
 
         #addTaskBtn {
             background: var(--accent); color: white; border: none; border-radius: 8px;
             padding: 0 20px; font-weight: 700; cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        #addTaskBtn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+        }
+
+        #addTaskBtn:active {
+            transform: translateY(0);
         }
 
         .secondary-btn {
@@ -73,7 +142,31 @@
             border-radius: 8px; padding: 12px; font-weight: 700; font-size: 1rem;
             cursor: pointer; transition: all 0.2s ease;
         }
-        .secondary-btn:hover { background: var(--accent); color: #fff; }
+        .secondary-btn:hover { background: var(--accent); color: #fff; transform: translateY(-2px); }
+        .secondary-btn:active { transform: translateY(0); }
+
+        body.dark-mode .secondary-btn {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--accent);
+        }
+
+        body.dark-mode .secondary-btn:hover {
+            background: var(--accent);
+            color: white;
+        }
+
+        /* Task Counter */
+        .task-counter {
+            text-align: center;
+            font-size: 0.85rem;
+            color: #8b7355;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        body.dark-mode .task-counter {
+            color: #a8a8a8;
+        }
 
         /* The Visual Bowl */
         .bowl-visual-container {
@@ -85,6 +178,31 @@
             border-radius: 0 0 110px 110px; position: relative;
             box-shadow: inset 0 -10px 20px rgba(0,0,0,0.2), 0 10px 15px rgba(0,0,0,0.1);
             border: 4px solid #8d6e63; overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .bowl-count-badge {
+            position: absolute;
+            top: -35px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--accent);
+            color: white;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 8px rgba(79, 70, 229, 0.3);
+            animation: countPulse 0.3s ease;
+        }
+
+        @keyframes countPulse {
+            0% { transform: translateX(-50%) scale(0.8); }
+            100% { transform: translateX(-50%) scale(1); }
         }
 
         .paper-wads-container {
@@ -100,9 +218,12 @@
             position: relative;
             border-radius: 42% 56% 35% 60% / 45% 45% 55% 55%;
             clip-path: polygon(15% 0%, 45% 12%, 70% 2%, 100% 25%, 88% 60%, 98% 85%, 68% 100%, 32% 88%, 0% 95%, 12% 45%);
+            transition: all 0.3s ease;
         }
 
-        .list-section-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 12px; color: #8b7355; padding-left: 4px; }
+        .list-section-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 12px; color: #8b7355; padding-left: 4px; transition: color 0.3s ease; }
+
+        body.dark-mode .list-section-title { color: #a8a8a8; }
 
         /* Task Items Flat Layout */
         .task-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; margin-bottom: 35px;}
@@ -119,6 +240,28 @@
                 1px 80%, 3px 60%, 1px 40%, 2px 20%
             );
             position: relative;
+            transition: all 0.3s ease;
+            animation: slideIn 0.4s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .task-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 2px 5px 10px rgba(0,0,0,0.15);
+        }
+
+        body.dark-mode .task-item {
+            border-color: rgba(255,255,255,0.2);
         }
         
         .task-item label { width: 85%; user-select: none; padding-top: 3px; word-break: break-word;}
@@ -127,8 +270,12 @@
             background: none; border: none; color: #c9ada7; font-size: 1.3rem; 
             cursor: pointer; padding: 0 5px; font-weight: bold; margin-left: auto;
             display: flex; align-items: center; justify-content: center;
+            transition: all 0.2s ease;
         }
-        .delete-task-btn:hover { color: #cc4444; }
+        .delete-task-btn:hover { 
+            color: #cc4444;
+            transform: scale(1.2);
+        }
 
         /* --- Slow-Motion Overlay Layer --- */
         #pickedPaperOverlay {
@@ -180,30 +327,166 @@
             border: none; padding: 14px 24px; border-radius: 8px; font-weight: 700; 
             cursor: pointer; font-family: 'Inter', sans-serif; font-size: 0.95rem;
             opacity: 0; text-align: center; width: 100%; box-sizing: border-box;
+            transition: all 0.2s ease;
         }
+
+        .modal-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .modal-btn:active {
+            transform: translateY(0);
+        }
+
         #pickedPaperOverlay.active .modal-btn { animation: inkBleedReveal 0.6s ease 2.4s forwards; }
 
         .complete-action-btn { background: var(--success); color: #fff; box-shadow: 0 4px 10px rgba(16, 185, 129, 0.3); }
-        .redraw-action-btn { background: #f1f5f9; color: #475569; border: 1px solid #cbd5e0; }
+        .complete-action-btn:hover { box-shadow: 0 6px 15px rgba(16, 185, 129, 0.5); }
         
+        .redraw-action-btn { background: #f1f5f9; color: #475569; border: 1px solid #cbd5e0; }
+        .redraw-action-btn:hover { background: #e2e8f0; }
+
         /* --- Completed History Desk Log --- */
         .history-card-container {
             background: rgba(255, 255, 255, 0.35); border-radius: 16px;
             padding: 20px; border: 1px dashed #b5a493; margin-top: 20px;
+            transition: all 0.3s ease;
         }
+
+        body.dark-mode .history-card-container {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px dashed rgba(255,255,255,0.2);
+        }
+
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .history-filter-group {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background: rgba(255,255,255,0.6);
+            border: 1px solid #b5a493;
+            border-radius: 6px;
+            padding: 6px 12px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: #8b7355;
+        }
+
+        .filter-btn.active {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
+
+        .filter-btn:hover {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
+
+        body.dark-mode .filter-btn {
+            background: rgba(255,255,255,0.05);
+            color: var(--dark-text);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        body.dark-mode .filter-btn.active {
+            background: var(--accent);
+            color: white;
+        }
+
+        .clear-history-btn {
+            background: #ffebee;
+            color: #c62828;
+            border: none;
+            border-radius: 6px;
+            padding: 6px 12px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: 600;
+        }
+
+        .clear-history-btn:hover {
+            background: #ffcdd2;
+        }
+
+        body.dark-mode .clear-history-btn {
+            background: rgba(198, 40, 40, 0.2);
+            color: #ff6b6b;
+        }
+
+        body.dark-mode .clear-history-btn:hover {
+            background: rgba(198, 40, 40, 0.3);
+        }
+
         .history-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; }
         .history-item {
             background: rgba(255,255,255,0.6); padding: 12px 14px; border-radius: 8px;
             font-size: 0.9rem; color: #555; display: flex; flex-direction: column; gap: 4px;
             border-left: 4px solid #b5a493;
+            animation: slideIn 0.4s ease;
+            transition: all 0.2s ease;
         }
+
+        .history-item:hover {
+            transform: translateX(4px);
+        }
+
+        body.dark-mode .history-item {
+            background: rgba(255,255,255,0.1);
+            color: var(--dark-text);
+            border-left-color: rgba(255,255,255,0.3);
+        }
+
         .history-task-title { font-weight: 600; color: var(--text-main); word-break: break-word; }
         .history-timestamp { font-size: 0.75rem; color: #8b7355; font-weight: 500;}
+
+        body.dark-mode .history-timestamp { color: #a8a8a8; }
+
         .empty-history { font-size: 0.85rem; font-style: italic; color: #8b7355; text-align: center; padding: 10px 0; }
+
+        body.dark-mode .empty-history { color: #a8a8a8; }
 
         .sync-status {
             font-size: 0.75rem; text-align: center; color: #8b7355; margin-top: 10px;
             padding: 8px; background: rgba(255,255,255,0.3); border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode .sync-status {
+            color: #a8a8a8;
+            background: rgba(255,255,255,0.05);
+        }
+
+        /* Confetti */
+        .confetti {
+            position: fixed;
+            pointer-events: none;
+            animation: confettiFall 2.5s ease-out forwards;
+        }
+
+        @keyframes confettiFall {
+            0% {
+                opacity: 1;
+                transform: translateY(0) rotateZ(0deg) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(500px) rotateZ(720deg) scale(0);
+            }
         }
 
         /* Animation Framework Calculations */
@@ -216,12 +499,38 @@
                 clip-path: polygon(
                     0% 5px, 10px 0%, 20% 7px, 30% 2px, 40% 8px, 50% 0%, 60% 9px, 70% 3px, 80% 8px, 90% 1px, 100% 6px,
                     calc(100% - 5px) 20px, calc(100% - 1px) 40%, calc(100% - 6px) 60%, calc(100% - 2px) 80%, calc(100% - 5px) 100%,
-                    90% calc(100% - 4px), 80% calc(100% - 10px), 70% calc(100% - 2px), 60% calc(100% - 8px), 50% calc(100% - 1px), 40% calc(100% - 7px), 30% calc(100% - 3px), 20% calc(100% - 9px), 10% calc(100% - 2px), 0% calc(100% - 6px),
+                    90% calc(100% - 4px), 80% calc(100% - 10px), 70% calc(100% - 2px), 60% calc(100% - 8px), 50% calc(100% - 1px), 40% calc(100% - 7px), 30% calc(100% - 3px), 20% calc(100% - 9px), 10% calc(100% - 5px),
                     4px 80%, 1px 60%, 5px 40%, 2px 20%
                 );
             }
         }
         @keyframes inkBleedReveal { to { opacity: 1; transform: translateY(0); } }
+
+        /* Mobile Responsive */
+        @media (max-width: 480px) {
+            h1 { font-size: 1.8rem; }
+            .subtitle { font-size: 0.8rem; }
+            .bowl { width: 160px; height: 85px; }
+            .bowl-count-badge { width: 35px; height: 35px; font-size: 1rem; top: -30px; }
+            .crumpled-ball-small { width: 18px; height: 16px; }
+            .task-item { font-size: 1rem; padding: 12px; }
+            .task-item label { width: 80%; }
+            .delete-task-btn { font-size: 1.1rem; }
+            .picked-paper-display { padding: 20px; }
+            .picked-task-text { font-size: 1.5rem; }
+            .modal-btn { padding: 12px 20px; font-size: 0.9rem; }
+            .header-controls { gap: 8px; }
+            .icon-btn { padding: 6px 10px; font-size: 1rem; }
+        }
+
+        @media (max-width: 360px) {
+            h1 { font-size: 1.5rem; }
+            body { padding: 15px 12px; }
+            .container { padding-bottom: 80px; }
+            .control-panel { padding: 12px; }
+            .task-item { padding: 10px; font-size: 0.95rem; }
+            .bowl { width: 140px; height: 75px; }
+        }
     </style>
 </head>
 <body>
@@ -244,6 +553,10 @@
     <header>
         <h1>Action Plan</h1>
         <p class="subtitle">The Crumpled Task Bowl Workspace</p>
+        <div class="header-controls">
+            <button class="icon-btn" id="darkModeToggle" title="Toggle Dark Mode">🌙</button>
+            <button class="icon-btn" id="helpBtn" title="Keyboard Shortcuts">⌨️</button>
+        </div>
     </header>
 
     <form id="taskForm" class="control-panel">
@@ -251,11 +564,14 @@
             <input type="text" id="taskInput" placeholder="Write a new task..." autocomplete="off">
             <button type="submit" id="addTaskBtn">Add</button>
         </div>
-        <button type="button" id="randomBtn" class="secondary-btn">🎲 Pick Paper from Bowl</button>
+        <button type="button" id="randomBtn" class="secondary-btn">🎲 Pick Paper from Bowl (SPACE)</button>
     </form>
+
+    <div class="task-counter" id="taskCounter"></div>
 
     <div class="bowl-visual-container">
         <div class="bowl" id="bowlRef">
+            <div class="bowl-count-badge" id="bowlCountBadge">0</div>
             <div class="paper-wads-container" id="wadsContainer"></div>
         </div>
     </div>
@@ -264,16 +580,24 @@
     <ul class="task-list" id="activeTaskList"></ul>
 
     <div class="history-card-container">
-        <div class="list-section-title" style="color: #6e5d4f; font-size: 1rem;">📜 Completed History</div>
+        <div class="history-header">
+            <div class="list-section-title" style="margin: 0;">📜 Completed History</div>
+            <div class="history-filter-group">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="today">Today</button>
+                <button class="filter-btn" data-filter="week">Week</button>
+                <button class="clear-history-btn" id="clearHistoryBtn">Clear</button>
+            </div>
+        </div>
         <ul class="history-list" id="completedHistoryList"></ul>
-        <div class="sync-status" id="syncStatus">✓ Data synced to GitHub Issues</div>
+        <div class="sync-status" id="syncStatus">✓ Data synced locally</div>
     </div>
 </div>
 
 <script>
     const GITHUB_OWNER = 'ckdesai1127';
     const GITHUB_REPO = 'tasker';
-    const GITHUB_TOKEN = localStorage.getItem('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') || '';
+    const GITHUB_TOKEN = localStorage.getItem('github_token') || '';
 
     const defaultInitialTasks = [
         { id: "t1", text: "Pick up art room", completed: false, completedDate: null },
@@ -295,8 +619,47 @@
             return saved ? JSON.parse(saved) : defaultInitialTasks;
         } catch (e) { return defaultInitialTasks; }
     }
+    
     function saveDatabase(data) {
         try { localStorage.setItem('crumpled_master_tasks', JSON.stringify(data)); } catch (e) {}
+    }
+
+    function isDarkMode() {
+        return document.body.classList.contains('dark-mode');
+    }
+
+    function toggleDarkMode() {
+        document.body.classList.toggle('dark-mode');
+        localStorage.setItem('darkMode', isDarkMode() ? 'true' : 'false');
+    }
+
+    function loadDarkModeSetting() {
+        if (localStorage.getItem('darkMode') === 'true') {
+            document.body.classList.add('dark-mode');
+        }
+    }
+
+    function createConfetti() {
+        const colors = ['#ff6b6b', '#4f46e5', '#10b981', '#f59e0b', '#ec4899'];
+        for (let i = 0; i < 30; i++) {
+            const confetti = document.createElement('div');
+            confetti.className = 'confetti';
+            confetti.style.left = Math.random() * window.innerWidth + 'px';
+            confetti.style.top = window.innerHeight / 2 + 'px';
+            confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            confetti.style.width = (Math.random() * 10 + 5) + 'px';
+            confetti.style.height = (Math.random() * 10 + 5) + 'px';
+            confetti.style.borderRadius = '50%';
+            document.body.appendChild(confetti);
+            
+            setTimeout(() => confetti.remove(), 2500);
+        }
+    }
+
+    function triggerHaptic() {
+        if (navigator.vibrate) {
+            navigator.vibrate([10, 20, 10]);
+        }
     }
 
     // GitHub Issues Integration
@@ -336,24 +699,54 @@
         const syncStatus = document.getElementById('syncStatus');
         syncStatus.innerText = message;
         setTimeout(() => {
-            syncStatus.innerText = '✓ Data synced to GitHub Issues';
+            syncStatus.innerText = '✓ Data synced locally';
         }, 3000);
     }
 
     let tasks = loadDatabase();
     let currentTurnDrawCount = 0;
     let currentlySelectedTask = null;
+    let currentHistoryFilter = 'all';
+
+    function isToday(dateString) {
+        const date = new Date(dateString);
+        const today = new Date();
+        return date.toDateString() === today.toDateString();
+    }
+
+    function isThisWeek(dateString) {
+        const date = new Date(dateString);
+        const now = new Date();
+        const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+        return date >= weekAgo && date <= now;
+    }
+
+    function filterHistoryByDate(completedTasks, filter) {
+        if (filter === 'today') {
+            return completedTasks.filter(t => isToday(t.completedDate));
+        } else if (filter === 'week') {
+            return completedTasks.filter(t => isThisWeek(t.completedDate));
+        }
+        return completedTasks;
+    }
 
     // UI Rendering Loop
     function render() {
         const activeContainer = document.getElementById('activeTaskList');
         const historyContainer = document.getElementById('completedHistoryList');
+        const taskCounter = document.getElementById('taskCounter');
+        const bowlCountBadge = document.getElementById('bowlCountBadge');
         
         activeContainer.innerHTML = '';
         historyContainer.innerHTML = '';
 
         const activeTasks = tasks.filter(t => !t.completed);
         const completedTasks = tasks.filter(t => t.completed);
+
+        // Update counters
+        const activeCount = activeTasks.length;
+        taskCounter.innerHTML = `📋 ${activeCount} active task${activeCount !== 1 ? 's' : ''} in the bowl`;
+        bowlCountBadge.innerText = activeCount;
 
         // 1. Build General Active Feed
         if (activeTasks.length === 0) {
@@ -383,11 +776,13 @@
             });
         }
 
-        // 2. Build Historical Log Stack
-        if (completedTasks.length === 0) {
+        // 2. Build Historical Log Stack with filtering
+        const filteredCompleted = filterHistoryByDate(completedTasks, currentHistoryFilter);
+        
+        if (filteredCompleted.length === 0) {
             historyContainer.innerHTML = `<li class="empty-history">No tasks logged in history yet.</li>`;
         } else {
-            [...completedTasks].reverse().forEach(task => {
+            [...filteredCompleted].reverse().forEach(task => {
                 const li = document.createElement('li');
                 li.className = 'history-item';
                 
@@ -408,10 +803,11 @@
         // 3. Render Crumpled Paper Wads
         const wadsContainer = document.getElementById('wadsContainer');
         wadsContainer.innerHTML = '';
-        activeTasks.forEach(() => {
+        activeTasks.forEach((task, idx) => {
             const wad = document.createElement('div');
             wad.className = 'crumpled-ball-small';
             wad.style.transform = `rotate(${Math.random() * 360}deg)`;
+            wad.style.animationDelay = `${idx * 0.05}s`;
             wadsContainer.appendChild(wad);
         });
     }
@@ -423,10 +819,24 @@
         const text = input.value.trim();
         if (!text) return;
 
+        // Prevent duplicates
+        if (tasks.some(t => t.text.toLowerCase() === text.toLowerCase() && !t.completed)) {
+            alert("This task already exists!");
+            return;
+        }
+
+        // Limit tasks to 20
+        const activeTasks = tasks.filter(t => !t.completed);
+        if (activeTasks.length >= 20) {
+            alert("Bowl is full! Maximum 20 active tasks. Complete some tasks first.");
+            return;
+        }
+
         tasks.push({ id: "t_" + Date.now(), text: text, completed: false, completedDate: null });
         input.value = ''; input.blur(); 
         saveDatabase(tasks);
         render();
+        triggerHaptic();
     });
 
     // --- Core Animation Randomizer Layer ---
@@ -463,6 +873,8 @@
         flyingBall.style.left = `${window.innerWidth / 2 - 12}px`;
         flyingBall.style.top = `${window.innerHeight / 2 - 12}px`;
         flyingBall.style.transform = 'scale(1.8) rotate(240deg)';
+
+        triggerHaptic();
 
         // Phase 2: Open Sheet Uncrumple Framework
         setTimeout(() => {
@@ -512,11 +924,57 @@
             
             overlay.classList.remove('active');
             saveDatabase(tasks);
+            
+            // Show confetti animation
+            createConfetti();
+            triggerHaptic();
+            
+            render();
+        }
+    });
+
+    // Dark Mode Toggle
+    document.getElementById('darkModeToggle').addEventListener('click', () => {
+        toggleDarkMode();
+    });
+
+    // Keyboard Shortcuts
+    document.addEventListener('keydown', (e) => {
+        if (e.code === 'Space' && e.target === document.body) {
+            e.preventDefault();
+            document.getElementById('randomBtn').click();
+        }
+    });
+
+    // Help Button
+    document.getElementById('helpBtn').addEventListener('click', () => {
+        alert('⌨️ Keyboard Shortcuts:\n\nSPACE - Pick from bowl\n\nTip: Press Tab to focus input field, then ENTER to add task');
+    });
+
+    // History Filter Buttons
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            currentHistoryFilter = btn.getAttribute('data-filter');
+            render();
+        });
+    });
+
+    // Clear History Button
+    document.getElementById('clearHistoryBtn').addEventListener('click', () => {
+        if (confirm('Are you sure you want to clear all completed tasks? This cannot be undone.')) {
+            tasks = tasks.map(t => ({ ...t, completed: false, completedDate: null }));
+            saveDatabase(tasks);
+            currentHistoryFilter = 'all';
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            document.querySelector('[data-filter="all"]').classList.add('active');
             render();
         }
     });
 
     // Initial Engine Render Boot Up
+    loadDarkModeSetting();
     render();
 </script>
 </body>
