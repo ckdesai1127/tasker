@@ -29,6 +29,8 @@
             --paper-texture: url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%22100%22%3E%3Cfilter id=%22noise%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.9%22 numOctaves=%224%22 result=%22noise%22/%3E%3CfeDisplacementMap in=%22SourceGraphic%22 in2=%22noise%22 scale=%221%22/%3E%3C/filter%3E%3Crect width=%22100%22 height=%22100%22 fill=%22%23f5f5f5%22 filter=%22url%28%23noise%29%22/%3E%3C/svg%3E');
         }
 
+        * { box-sizing: border-box; }
+
         body {
             font-family: 'Inter', sans-serif;
             background-color: var(--bg-color);
@@ -91,6 +93,96 @@
             background: rgba(255,255,255,0.2);
         }
 
+        /* User Management */
+        .user-management {
+            background: rgba(255,255,255,0.5);
+            border-radius: 16px;
+            padding: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode .user-management {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .user-selection {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 8px;
+        }
+
+        .user-label {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #8b7355;
+        }
+
+        body.dark-mode .user-label {
+            color: #a8a8a8;
+        }
+
+        .user-select {
+            padding: 6px 12px;
+            border: 2px solid #b5a493;
+            border-radius: 8px;
+            font-family: inherit;
+            cursor: pointer;
+            background: white;
+            color: #333;
+            transition: all 0.2s ease;
+        }
+
+        body.dark-mode .user-select {
+            background: rgba(0,0,0,0.3);
+            border-color: rgba(255,255,255,0.2);
+            color: white;
+        }
+
+        .user-select:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 8px rgba(79, 70, 229, 0.2);
+        }
+
+        .add-user-input {
+            padding: 6px 10px;
+            border: 2px solid #b5a493;
+            border-radius: 8px;
+            font-family: inherit;
+            background: white;
+            color: #333;
+            transition: all 0.2s ease;
+            font-size: 0.9rem;
+        }
+
+        body.dark-mode .add-user-input {
+            background: rgba(0,0,0,0.3);
+            border-color: rgba(255,255,255,0.2);
+            color: white;
+        }
+
+        .add-user-btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 6px 12px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+        }
+
+        .add-user-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(79, 70, 229, 0.3);
+        }
+
         /* Controls */
         .control-panel {
             background: rgba(255,255,255,0.5);
@@ -131,10 +223,6 @@
         #addTaskBtn:hover {
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
-        }
-
-        #addTaskBtn:active {
-            transform: translateY(0);
         }
 
         .secondary-btn {
@@ -179,6 +267,17 @@
             box-shadow: inset 0 -10px 20px rgba(0,0,0,0.2), 0 10px 15px rgba(0,0,0,0.1);
             border: 4px solid #8d6e63; overflow: hidden;
             transition: all 0.3s ease;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .bowl:hover {
+            transform: scale(1.05);
+            box-shadow: inset 0 -10px 20px rgba(0,0,0,0.2), 0 15px 25px rgba(0,0,0,0.2);
+        }
+
+        .bowl:active {
+            transform: scale(0.98);
         }
 
         .bowl-count-badge {
@@ -198,6 +297,7 @@
             font-size: 1.1rem;
             box-shadow: 0 4px 8px rgba(79, 70, 229, 0.3);
             animation: countPulse 0.3s ease;
+            pointer-events: none;
         }
 
         @keyframes countPulse {
@@ -211,7 +311,6 @@
             display: flex; flex-wrap: wrap-reverse; justify-content: center; align-content: flex-start; gap: 6px;
         }
 
-        /* Crumpled Paper Ball Styles inside Bowl */
         .crumpled-ball-small {
             width: 22px; height: 20px; background-color: var(--paper-color);
             background-image: var(--paper-texture);
@@ -232,56 +331,25 @@
 
         body.dark-mode .list-section-title { color: #a8a8a8; }
 
-        /* Task Items Flat Layout */
-        .task-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; margin-bottom: 35px;}
-        
-        .task-item {
-            display: flex; align-items: center; padding: 15px; 
-            background-color: var(--paper-color); background-image: var(--paper-texture);
-            color: var(--ink-color); font-family: 'Permanent Marker', cursive; font-size: 1.1rem; letter-spacing: 0.05rem;
-            box-shadow: 2px 3px 5px rgba(0,0,0,0.1); border: 1px solid #e0e0e0;
-            clip-path: polygon(
-                0% 2px, 15px 0%, 30% 3px, 45% 1px, 60% 4px, 85% 1px, 100% 3px,
-                calc(100% - 2px) 20px, 100% 40%, calc(100% - 3px) 60%, 100% 80%, calc(100% - 1px) 100%,
-                85% calc(100% - 2px), 70% 100%, 50% calc(100% - 3px), 30% 100%, 15% calc(100% - 1px), 0% 100%,
-                1px 80%, 3px 60%, 1px 40%, 2px 20%
-            );
-            position: relative;
-            transition: all 0.3s ease;
-            animation: slideIn 0.4s ease;
-        }
-
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateX(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        .task-item:hover {
-            transform: translateY(-2px);
-            box-shadow: 2px 5px 10px rgba(0,0,0,0.15);
-        }
-
-        body.dark-mode .task-item {
-            border-color: rgba(255,255,255,0.2);
-        }
-        
-        .task-item label { width: 85%; user-select: none; padding-top: 3px; word-break: break-word;}
-
-        .delete-task-btn {
-            background: none; border: none; color: #c9ada7; font-size: 1.3rem; 
-            cursor: pointer; padding: 0 5px; font-weight: bold; margin-left: auto;
-            display: flex; align-items: center; justify-content: center;
+        /* Task Review Button */
+        .review-btn {
+            width: 100%;
+            background: #10b981;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
             transition: all 0.2s ease;
+            margin-bottom: 20px;
         }
-        .delete-task-btn:hover { 
-            color: #cc4444;
-            transform: scale(1.2) rotate(15deg);
+
+        .review-btn:hover {
+            background: #059669;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
         }
 
         /* --- Slow-Motion Overlay Layer --- */
@@ -352,6 +420,128 @@
         
         .redraw-action-btn { background: #f1f5f9; color: #475569; border: 1px solid #cbd5e0; }
         .redraw-action-btn:hover { background: #e2e8f0; }
+
+        /* Task Review Modal */
+        .task-review-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.6); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+            z-index: 999; display: none; justify-content: center; align-items: center;
+            opacity: 0; transition: opacity 0.3s ease;
+            padding: 20px;
+        }
+
+        .task-review-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .task-review-modal {
+            background: var(--paper-color);
+            border-radius: 16px;
+            padding: 30px;
+            max-width: 450px;
+            width: 100%;
+            max-height: 70vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .task-review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .task-review-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--ink-color);
+            margin: 0;
+        }
+
+        .close-review-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #999;
+            transition: all 0.2s ease;
+        }
+
+        .close-review-btn:hover {
+            color: var(--accent);
+            transform: scale(1.1);
+        }
+
+        .task-review-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .task-review-item {
+            background: rgba(79, 70, 229, 0.05);
+            padding: 12px;
+            border-radius: 8px;
+            border-left: 4px solid var(--accent);
+            font-family: 'Permanent Marker', cursive;
+            color: var(--ink-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            animation: slideIn 0.3s ease;
+        }
+
+        .task-review-item button {
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 4px 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            font-size: 0.8rem;
+        }
+
+        .task-review-item button:hover {
+            background: #ff5252;
+            transform: scale(1.05);
+        }
+
+        .empty-task-review {
+            text-align: center;
+            padding: 20px;
+            color: #999;
+            font-style: italic;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
 
         /* --- Completed History Desk Log --- */
         .history-card-container {
@@ -539,23 +729,11 @@
             .bowl { width: 160px; height: 85px; }
             .bowl-count-badge { width: 35px; height: 35px; font-size: 1rem; top: -30px; }
             .crumpled-ball-small { width: 18px; height: 16px; }
-            .task-item { font-size: 1rem; padding: 12px; }
-            .task-item label { width: 80%; }
-            .delete-task-btn { font-size: 1.1rem; }
             .picked-paper-display { padding: 20px; }
             .picked-task-text { font-size: 1.5rem; }
             .modal-btn { padding: 12px 20px; font-size: 0.9rem; }
             .header-controls { gap: 8px; }
             .icon-btn { padding: 6px 10px; font-size: 1rem; }
-        }
-
-        @media (max-width: 360px) {
-            h1 { font-size: 1.5rem; }
-            body { padding: 15px 12px; }
-            .container { padding-bottom: 80px; }
-            .control-panel { padding: 12px; }
-            .task-item { padding: 10px; font-size: 0.95rem; }
-            .bowl { width: 140px; height: 75px; }
         }
     </style>
 </head>
@@ -575,6 +753,16 @@
     </div>
 </div>
 
+<div class="task-review-overlay" id="taskReviewOverlay">
+    <div class="task-review-modal">
+        <div class="task-review-header">
+            <h2 class="task-review-title">📋 Review Tasks</h2>
+            <button class="close-review-btn" id="closeReviewBtn">×</button>
+        </div>
+        <ul class="task-review-list" id="taskReviewList"></ul>
+    </div>
+</div>
+
 <div class="container">
     <header>
         <h1>Action Plan</h1>
@@ -585,12 +773,22 @@
         </div>
     </header>
 
+    <div class="user-management">
+        <div class="user-selection">
+            <span class="user-label">👤 Select Person:</span>
+            <select id="userSelect" class="user-select">
+                <option value="">-- No one selected --</option>
+            </select>
+            <input type="text" id="newUserInput" class="add-user-input" placeholder="New person..." />
+            <button class="add-user-btn" id="addUserBtn">+ Add</button>
+        </div>
+    </div>
+
     <form id="taskForm" class="control-panel">
         <div class="input-group">
             <input type="text" id="taskInput" placeholder="Write a new task..." autocomplete="off">
             <button type="submit" id="addTaskBtn">Add</button>
         </div>
-        <button type="button" id="randomBtn" class="secondary-btn">🎲 Pick Paper from Bowl (SPACE)</button>
     </form>
 
     <div class="task-counter" id="taskCounter"></div>
@@ -602,8 +800,7 @@
         </div>
     </div>
 
-    <div class="list-section-title">Active General List</div>
-    <ul class="task-list" id="activeTaskList"></ul>
+    <button class="review-btn" id="reviewBtn">📋 Review & Manage Tasks</button>
 
     <div class="history-card-container">
         <div class="history-header">
@@ -625,29 +822,60 @@
     const GITHUB_REPO = 'tasker';
     const GITHUB_TOKEN = localStorage.getItem('github_token') || '';
 
-    const defaultInitialTasks = [
-        { id: "t1", text: "Pick up art room", completed: false, completedDate: null },
-        { id: "t2", text: "Measure windows & order blinds", completed: false, completedDate: null },
-        { id: "t3", text: "Pick up living room", completed: false, completedDate: null },
-        { id: "t4", text: "Hang clean laundry in bedroom x 3", completed: false, completedDate: null },
-        { id: "t5", text: "Pick up dining room", completed: false, completedDate: null },
-        { id: "t6", text: "Do laundry", completed: false, completedDate: null },
-        { id: "t7", text: "Hang curtain in bedroom", completed: false, completedDate: null },
-        { id: "t8", text: "Get door for bathroom", completed: false, completedDate: null },
-        { id: "t9", text: "Mow Lawn", completed: false, completedDate: null },
-        { id: "t10", text: "Trim overgrown plants & trees", completed: false, completedDate: null },
-        { id: "t11", text: "Change receptacles", completed: false, completedDate: null }
-    ];
+    // Multi-user data structure
+    let allUsers = JSON.parse(localStorage.getItem('allUsers')) || {};
+    let currentUser = localStorage.getItem('currentUser') || '';
 
-    function loadDatabase() {
-        try {
-            const saved = localStorage.getItem('crumpled_master_tasks');
-            return saved ? JSON.parse(saved) : defaultInitialTasks;
-        } catch (e) { return defaultInitialTasks; }
+    function initializeUser(username) {
+        if (!allUsers[username]) {
+            allUsers[username] = {
+                tasks: [],
+                completedTasks: []
+            };
+            saveAllUsers();
+        }
     }
-    
-    function saveDatabase(data) {
-        try { localStorage.setItem('crumpled_master_tasks', JSON.stringify(data)); } catch (e) {}
+
+    function saveAllUsers() {
+        localStorage.setItem('allUsers', JSON.stringify(allUsers));
+    }
+
+    function getCurrentUserData() {
+        if (!currentUser) return { tasks: [], completedTasks: [] };
+        initializeUser(currentUser);
+        return allUsers[currentUser];
+    }
+
+    function addUser(username) {
+        if (username.trim() && !allUsers[username]) {
+            initializeUser(username);
+            saveAllUsers();
+            updateUserSelect();
+            return true;
+        }
+        return false;
+    }
+
+    function switchUser(username) {
+        currentUser = username;
+        localStorage.setItem('currentUser', username);
+        initializeUser(username);
+        render();
+    }
+
+    function updateUserSelect() {
+        const select = document.getElementById('userSelect');
+        const users = Object.keys(allUsers);
+        const currentOptions = select.innerHTML;
+        
+        select.innerHTML = '<option value="">-- No one selected --</option>';
+        users.forEach(user => {
+            const option = document.createElement('option');
+            option.value = user;
+            option.textContent = user;
+            if (user === currentUser) option.selected = true;
+            select.appendChild(option);
+        });
     }
 
     function isDarkMode() {
@@ -691,11 +919,11 @@
     // GitHub Issues Integration
     async function createGitHubIssue(taskTitle, taskText, status) {
         if (!GITHUB_TOKEN) {
-            console.log('No GitHub token - skipping issue creation. Add token to localStorage[github_token] to enable.');
+            console.log('No GitHub token - skipping issue creation.');
             return;
         }
 
-        const body = `## Task Completed\n\n**Task:** ${taskText}\n\n**Status:** ${status}\n**Completed:** ${new Date().toLocaleString()}`;
+        const body = `## Task Completed\n\n**Person:** ${currentUser}\n**Task:** ${taskText}\n\n**Status:** ${status}\n**Completed:** ${new Date().toLocaleString()}`;
         
         try {
             const response = await fetch(`https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/issues`, {
@@ -705,7 +933,7 @@
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    title: `✓ ${taskTitle}`,
+                    title: `✓ ${currentUser}: ${taskTitle}`,
                     body: body,
                     labels: ['task-completed']
                 })
@@ -717,7 +945,7 @@
             }
         } catch (error) {
             console.error('Error creating GitHub issue:', error);
-            showSyncStatus('⚠ Could not sync (add GitHub token)');
+            showSyncStatus('⚠ Could not sync');
         }
     }
 
@@ -729,7 +957,6 @@
         }, 3000);
     }
 
-    let tasks = loadDatabase();
     let currentTurnDrawCount = 0;
     let currentlySelectedTask = null;
     let currentHistoryFilter = 'all';
@@ -758,52 +985,29 @@
 
     // UI Rendering Loop
     function render() {
-        const activeContainer = document.getElementById('activeTaskList');
+        if (!currentUser) {
+            document.getElementById('taskCounter').innerHTML = '⚠️ Please select a person first';
+            document.getElementById('bowlCountBadge').innerText = '0';
+            document.getElementById('wadsContainer').innerHTML = '';
+            document.getElementById('completedHistoryList').innerHTML = '<li class="empty-history">Select a person to get started</li>';
+            return;
+        }
+
+        const userData = getCurrentUserData();
         const historyContainer = document.getElementById('completedHistoryList');
         const taskCounter = document.getElementById('taskCounter');
         const bowlCountBadge = document.getElementById('bowlCountBadge');
         
-        activeContainer.innerHTML = '';
         historyContainer.innerHTML = '';
 
-        const activeTasks = tasks.filter(t => !t.completed);
-        const completedTasks = tasks.filter(t => t.completed);
+        const activeTasks = userData.tasks || [];
+        const completedTasks = userData.completedTasks || [];
 
-        // Update counters
         const activeCount = activeTasks.length;
-        taskCounter.innerHTML = `📋 ${activeCount} active task${activeCount !== 1 ? 's' : ''} in the bowl`;
+        taskCounter.innerHTML = `📋 ${activeCount} active task${activeCount !== 1 ? 's' : ''} for ${currentUser}`;
         bowlCountBadge.innerText = activeCount;
 
-        // 1. Build General Active Feed
-        if (activeTasks.length === 0) {
-            activeContainer.innerHTML = `<li style="font-style: italic; color:#8b7355; text-align:center; padding:15px;">Your bowl is clear! No active tasks.</li>`;
-        } else {
-            activeTasks.forEach((task, idx) => {
-                const li = document.createElement('li');
-                li.className = 'task-item';
-                li.style.animationDelay = `${idx * 0.05}s`;
-                
-                const lbl = document.createElement('label');
-                lbl.innerText = task.text;
-                
-                const delBtn = document.createElement('button');
-                delBtn.className = 'delete-task-btn';
-                delBtn.innerHTML = '×';
-                delBtn.title = 'Remove Task';
-                delBtn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    tasks = tasks.filter(t => t.id !== task.id);
-                    saveDatabase(tasks);
-                    render();
-                });
-
-                li.appendChild(lbl);
-                li.appendChild(delBtn);
-                activeContainer.appendChild(li);
-            });
-        }
-
-        // 2. Build Historical Log Stack with filtering
+        // Build Historical Log Stack with filtering
         const filteredCompleted = filterHistoryByDate(completedTasks, currentHistoryFilter);
         
         if (filteredCompleted.length === 0) {
@@ -828,7 +1032,7 @@
             });
         }
 
-        // 3. Render Crumpled Paper Wads
+        // Render Crumpled Paper Wads
         const wadsContainer = document.getElementById('wadsContainer');
         wadsContainer.innerHTML = '';
         activeTasks.forEach((task, idx) => {
@@ -843,28 +1047,88 @@
     // Input Submission Pipeline
     document.getElementById('taskForm').addEventListener('submit', (e) => {
         e.preventDefault();
+        if (!currentUser) {
+            alert('Please select a person first!');
+            return;
+        }
+
         const input = document.getElementById('taskInput');
         const text = input.value.trim();
         if (!text) return;
 
+        const userData = getCurrentUserData();
+
         // Prevent duplicates
-        if (tasks.some(t => t.text.toLowerCase() === text.toLowerCase() && !t.completed)) {
+        if (userData.tasks.some(t => t.text.toLowerCase() === text.toLowerCase())) {
             alert("This task already exists!");
             return;
         }
 
         // Limit tasks to 20
-        const activeTasks = tasks.filter(t => !t.completed);
-        if (activeTasks.length >= 20) {
+        if (userData.tasks.length >= 20) {
             alert("Bowl is full! Maximum 20 active tasks. Complete some tasks first.");
             return;
         }
 
-        tasks.push({ id: "t_" + Date.now(), text: text, completed: false, completedDate: null });
+        userData.tasks.push({ id: "t_" + Date.now(), text: text, completed: false, completedDate: null });
+        saveAllUsers();
         input.value = ''; input.blur(); 
-        saveDatabase(tasks);
         render();
         triggerHaptic();
+    });
+
+    // Task Review Modal
+    function openTaskReview() {
+        if (!currentUser) {
+            alert('Please select a person first!');
+            return;
+        }
+        
+        const userData = getCurrentUserData();
+        const reviewList = document.getElementById('taskReviewList');
+        reviewList.innerHTML = '';
+
+        if (userData.tasks.length === 0) {
+            reviewList.innerHTML = '<li class="empty-task-review">No tasks to review</li>';
+        } else {
+            userData.tasks.forEach((task, idx) => {
+                const li = document.createElement('li');
+                li.className = 'task-review-item';
+                li.style.animationDelay = `${idx * 0.05}s`;
+                
+                const taskSpan = document.createElement('span');
+                taskSpan.innerText = task.text;
+                
+                const deleteBtn = document.createElement('button');
+                deleteBtn.innerText = 'Delete';
+                deleteBtn.addEventListener('click', () => {
+                    userData.tasks = userData.tasks.filter(t => t.id !== task.id);
+                    saveAllUsers();
+                    openTaskReview();
+                    render();
+                });
+
+                li.appendChild(taskSpan);
+                li.appendChild(deleteBtn);
+                reviewList.appendChild(li);
+            });
+        }
+
+        document.getElementById('taskReviewOverlay').classList.add('active');
+    }
+
+    function closeTaskReview() {
+        document.getElementById('taskReviewOverlay').classList.remove('active');
+    }
+
+    // Bowl click to draw
+    document.getElementById('bowlRef').addEventListener('click', () => {
+        if (!currentUser) {
+            alert('Please select a person first!');
+            return;
+        }
+        currentTurnDrawCount = 0; 
+        executePaperDrawSequence();
     });
 
     // --- Core Animation Randomizer Layer ---
@@ -876,7 +1140,8 @@
     const redrawActionBtn = document.getElementById('redrawActionBtn');
 
     function executePaperDrawSequence() {
-        const activeTasks = tasks.filter(t => !t.completed);
+        const userData = getCurrentUserData();
+        const activeTasks = userData.tasks || [];
         if (activeTasks.length === 0) { alert("The bowl is empty! 🎉"); return; }
         
         currentTurnDrawCount++;
@@ -896,7 +1161,6 @@
 
         void flyingBall.offsetWidth;
 
-        // Phase 1: Slow Floating Launch Cycle (1.2 seconds)
         flyingBall.style.transition = 'all 1.2s cubic-bezier(0.25, 1, 0.5, 1)';
         flyingBall.style.left = `${window.innerWidth / 2 - 12}px`;
         flyingBall.style.top = `${window.innerHeight / 2 - 12}px`;
@@ -904,14 +1168,13 @@
 
         triggerHaptic();
 
-        // Phase 2: Open Sheet Uncrumple Framework
         setTimeout(() => {
             flyingBall.style.opacity = '0';
             pickedText.innerText = currentlySelectedTask.text;
             drawCounterText.innerText = `Draw ${currentTurnDrawCount} of 3`;
             
             if (currentTurnDrawCount >= 3) {
-                redrawActionBtn.style.display = 'none'; // Lock out redraws on turn 3
+                redrawActionBtn.style.display = 'none';
             } else {
                 redrawActionBtn.style.display = 'block';
             }
@@ -922,11 +1185,6 @@
         setTimeout(() => { flyingBall.style.display = 'none'; }, 1250);
     }
 
-    document.getElementById('randomBtn').addEventListener('click', () => {
-        currentTurnDrawCount = 0; 
-        executePaperDrawSequence();
-    });
-
     redrawActionBtn.addEventListener('click', () => {
         if (currentTurnDrawCount < 3) {
             executePaperDrawSequence();
@@ -935,30 +1193,58 @@
 
     document.getElementById('completeActionBtn').addEventListener('click', () => {
         if (currentlySelectedTask) {
-            // Real-Time System Timestamp Generation
             const liveClock = new Date();
             const formattedTimestamp = liveClock.toLocaleDateString('en-US', { 
                 weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' 
             }) + ' at ' + liveClock.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
 
-            currentlySelectedTask.completed = true;
-            currentlySelectedTask.completedDate = formattedTimestamp;
-            
-            // Create GitHub Issue for completed task
+            const userData = getCurrentUserData();
+            const taskIndex = userData.tasks.findIndex(t => t.id === currentlySelectedTask.id);
+            if (taskIndex !== -1) {
+                userData.tasks[taskIndex].completed = true;
+                userData.tasks[taskIndex].completedDate = formattedTimestamp;
+                userData.completedTasks.push(userData.tasks[taskIndex]);
+                userData.tasks.splice(taskIndex, 1);
+            }
+
             createGitHubIssue(currentlySelectedTask.text, currentlySelectedTask.text, 'Completed');
             
             currentlySelectedTask = null;
             currentTurnDrawCount = 0;
             
             overlay.classList.remove('active');
-            saveDatabase(tasks);
+            saveAllUsers();
             
-            // Show confetti animation
             createConfetti();
             triggerHaptic();
             
             render();
         }
+    });
+
+    // User Select Event
+    document.getElementById('userSelect').addEventListener('change', (e) => {
+        switchUser(e.target.value);
+    });
+
+    // Add User Button
+    document.getElementById('addUserBtn').addEventListener('click', () => {
+        const input = document.getElementById('newUserInput');
+        const username = input.value.trim();
+        if (addUser(username)) {
+            input.value = '';
+            switchUser(username);
+        } else {
+            alert('Invalid username or already exists!');
+        }
+    });
+
+    // Task Review Button
+    document.getElementById('reviewBtn').addEventListener('click', openTaskReview);
+    document.getElementById('closeReviewBtn').addEventListener('click', closeTaskReview);
+
+    document.getElementById('taskReviewOverlay').addEventListener('click', (e) => {
+        if (e.target.id === 'taskReviewOverlay') closeTaskReview();
     });
 
     // Dark Mode Toggle
@@ -970,13 +1256,13 @@
     document.addEventListener('keydown', (e) => {
         if (e.code === 'Space' && e.target === document.body) {
             e.preventDefault();
-            document.getElementById('randomBtn').click();
+            if (currentUser) executePaperDrawSequence();
         }
     });
 
     // Help Button
     document.getElementById('helpBtn').addEventListener('click', () => {
-        alert('⌨️ Keyboard Shortcuts:\n\nSPACE - Pick from bowl\n\nTip: Press Tab to focus input field, then ENTER to add task');
+        alert('⌨️ Keyboard Shortcuts:\n\nSPACE - Pick from bowl\n\nClick the bowl to draw a task!\n\nCreate multiple people for team task management.');
     });
 
     // History Filter Buttons
@@ -991,9 +1277,14 @@
 
     // Clear History Button
     document.getElementById('clearHistoryBtn').addEventListener('click', () => {
+        if (!currentUser) {
+            alert('Please select a person first!');
+            return;
+        }
         if (confirm('Are you sure you want to clear all completed tasks? This cannot be undone.')) {
-            tasks = tasks.map(t => ({ ...t, completed: false, completedDate: null }));
-            saveDatabase(tasks);
+            const userData = getCurrentUserData();
+            userData.completedTasks = [];
+            saveAllUsers();
             currentHistoryFilter = 'all';
             document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
             document.querySelector('[data-filter="all"]').classList.add('active');
@@ -1003,6 +1294,7 @@
 
     // Initial Engine Render Boot Up
     loadDarkModeSetting();
+    updateUserSelect();
     render();
 </script>
 </body>
